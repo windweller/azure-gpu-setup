@@ -1,9 +1,6 @@
-#!/bin/bash 
+#!/bin/bash
 
-#if [ "$EUID" -ne 0 ]; then
-#	echo "Please run as root (with sudo)"
-#	exit
-#fi
+CUDA_INSTALLER="cuda_installer-run"
 
 SETUP_DIR="$HOME/gpu-setup"
 mkdir -p $SETUP_DIR
@@ -13,11 +10,11 @@ cd $SETUP_DIR
 sudo apt-get -y install python-numpy python-dev python-wheel python-mock python-matplotlib python-pip
 
 # install cuda drivers
-if [ ! -f "cuda_8.0.61_375.26_linux-run" ]; then 
-	wget https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda_8.0.61_375.26_linux-run
+if [ ! -f "$CUDA_INSTALLER" ]; then
+	wget -O $CUDA_INSTALLER https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda_8.0.61_375.26_linux-run
 fi
-chmod +x cuda_8.0.61_375.26_linux-run
-sudo sh cuda_8.0.61_375.26_linux-run --silent --verbose --driver
+chmod +x $CUDA_INSTALLER
+sudo sh $CUDA_INSTALLER --silent --verbose --driver
 
 echo "Setup requires a reboot to continue."
 echo "The VM will reboot now. Login after it restarts and continue installation from part2."
